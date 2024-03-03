@@ -1,5 +1,19 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  query,
+  startAfter,
+  limit,
+  orderBy,
+  deleteDoc,
+  doc,
+  updateDoc
+} from 'firebase/firestore';
+
+const PRODUCT_COLLECTION = 'products';
 
 function MyFirebase() {
   const firebaseConfig = {
@@ -18,14 +32,49 @@ function MyFirebase() {
 
   self.getProducts = async () => {
     const products = [];
-    const querySnapshot = await getDocs(collection(db, 'products'));
+    const querySnapshot = await getDocs(collection(db, PRODUCT_COLLECTION));
     querySnapshot.forEach(doc => {
       products.push(doc.data());
     });
     return products;
   };
 
-  return { firebaseApp };
+  self.getProductsWithinLimits = async (lastVisible, itemsPerPage) => {
+    const q = query(
+      collection(db, PRODUCT_COLLECTION),
+      orderBy('createdAt'),
+      startAfter(lastVisible || 0),
+      limit(itemsPerPage)
+    );
+    const querySnapshot = await getDocs(q);
+    const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+    const newProducts = querySnapshot.docs.reverse().map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    return { newProducts, lastVisibleDoc };
+  };
+
+  self.addProduct = async product => {
+    await addDoc(collection(db, PRODUCT_COLLECTION), product);
+    return product;
+  };
+
+  self.deleteProduct = async id => {
+    await deleteDoc(doc(db, PRODUCT_COLLECTION, id));
+  };
+
+  self.updateProduct = async (id, updatedProductDetails) => {
+    await updateDoc(doc(db, PRODUCT_COLLECTION, id), updatedProductDetails);
+    return updatedProductDetails;
+  };
+
+  self.getTotalCountOfProducts = async () => {
+    const querySnapshot = await getDocs(collection(db, PRODUCT_COLLECTION));
+    return querySnapshot.size;
+  };
+
+  return self;
 }
 
 export const myFirebase = new MyFirebase();

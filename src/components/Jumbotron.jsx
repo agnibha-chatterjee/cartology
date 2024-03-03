@@ -18,10 +18,10 @@ export function Jumbotron() {
   };
 
   return (
-    <div className="p-3 mb-2 bg-body-tertiary rounded-3">
+    <div className="p-2 mb-1 bg-body-tertiary rounded-3">
       <div className="container-fluid py-5">
         <h1 className="display-5 fw-bold">Cartology</h1>
-        <p className="col-md-8 fs-4">
+        <p className="col-md-8 fs-5">
           Meet {"'Cartology'"} - your virtual companion for a delightful digital
           shopping spree. This cart not only holds your items but also cracks
           jokes to keep you entertained while you shop.

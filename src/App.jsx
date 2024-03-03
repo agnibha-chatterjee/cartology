@@ -23,7 +23,7 @@ function App() {
         </div>
         <div className="col-md-4">
           <Products
-            itemsPerPage={3}
+            itemsPerPage={20}
             key={keyOfProductComponent}
             setCart={setCart}
             setKeyOfProductComponent={setKeyOfProductComponent}

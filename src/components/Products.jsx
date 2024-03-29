@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { myFirebase } from '../models/MyFirebase';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from "react";
+import { myFirebase } from "../models/MyFirebase";
+import PropTypes from "prop-types";
 
 export function Products(props) {
   const {
     itemsPerPage,
     setCart,
     setKeyOfProductComponent,
-    setSelectedProduct
+    setSelectedProduct,
   } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState([]);
@@ -16,26 +16,26 @@ export function Products(props) {
   const [loading, setLoading] = useState(false);
   const [pagesData, setPagesData] = useState({});
 
-  const addToCart = product => {
-    setCart(pState => [
+  const addToCart = (product) => {
+    setCart((pState) => [
       ...pState,
-      { ...product, key: product.id + Math.random() }
+      { ...product, key: product.id + Math.random() },
     ]);
   };
 
-  const deleteProduct = async product => {
+  const deleteProduct = async (product) => {
     await myFirebase.deleteProduct(product.id);
-    const newProducts = products.filter(p => p.id !== product.id);
+    const newProducts = products.filter((p) => p.id !== product.id);
     setProducts(newProducts);
     setPagesData({ ...pagesData, [currentPage]: newProducts });
     setKeyOfProductComponent(Math.random());
   };
 
-  const updateProduct = async product => {
+  const updateProduct = async (product) => {
     setSelectedProduct(product);
   };
 
-  const fetchProducts = async pageCount => {
+  const fetchProducts = async (pageCount) => {
     setLoading(true);
     const { newProducts, lastVisibleDoc } =
       await myFirebase.getProductsWithinLimits(lastVisible, itemsPerPage);
@@ -86,7 +86,7 @@ export function Products(props) {
     <div>
       <div className="fw-bold fs-4">Products ({totalProducts} in total)</div>
       <div className="w-full overflow-y-scroll" style={{ height: 550 }}>
-        {products.map(product => (
+        {products.map((product) => (
           <div key={product.id} className="card my-2">
             <div className="card-body">
               <h5 className="card-title">{product.name}</h5>
@@ -142,5 +142,5 @@ Products.propTypes = {
   itemsPerPage: PropTypes.number.isRequired,
   setCart: PropTypes.func.isRequired,
   setKeyOfProductComponent: PropTypes.func.isRequired,
-  setSelectedProduct: PropTypes.func.isRequired
+  setSelectedProduct: PropTypes.func.isRequired,
 };

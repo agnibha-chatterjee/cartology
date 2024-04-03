@@ -28,7 +28,7 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "firebase-tools": "^13.4.0",
     "prop-types": "^15.8.1",
-    "vite": "^5.1.4"
+    "vite": "^5.1.7"
   },
   "packageManager": "pnpm@8.15.5+sha256.4b4efa12490e5055d59b9b9fc9438b7d581a6b7af3b5675eb5c5f447cee1a589"
 }
